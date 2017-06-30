@@ -39,9 +39,12 @@ def create_weights(src_grid, dest_grid, method='conserve',
                    ignore_unmapped=False,
                    unmasked_src=True, unmasked_dest=False):
 
-    _, src_grid_scrip = tempfile.mkstemp(suffix='.nc')
-    _, dest_grid_scrip = tempfile.mkstemp(suffix='.nc')
-    _, regrid_weights = tempfile.mkstemp(suffix='.nc')
+    # _, src_grid_scrip = tempfile.mkstemp(suffix='.nc')
+    # _, dest_grid_scrip = tempfile.mkstemp(suffix='.nc')
+    # _, regrid_weights = tempfile.mkstemp(suffix='.nc')
+    src_grid_scrip = 'src_grid_scrip.nc'
+    dest_grid_scrip = 'dest_grid_scrip.nc'
+    regrid_weights = 'regrid_weights.nc'
 
     if unmasked_src:
         src_grid.write_scrip(src_grid_scrip,
@@ -65,6 +68,10 @@ def create_weights(src_grid, dest_grid, method='conserve',
         import multiprocessing as mp
         mpirun = ['mpirun', '-np', str(mp.cpu_count() // 2)]
 
+    print(src_grid_scrip)
+    print(dest_grid_scrip)
+    print(regrid_weights)
+
     my_dir = os.path.dirname(os.path.realpath(__file__))
     esmf = os.path.join(my_dir, 'contrib', 'bin', 'ESMF_RegridWeightGen')
     if not os.path.exists(esmf):
@@ -87,8 +94,8 @@ def create_weights(src_grid, dest_grid, method='conserve',
                 print(f.read(), file=sys.stderr)
         return None
 
-    os.remove(src_grid_scrip)
-    os.remove(dest_grid_scrip)
+    # os.remove(src_grid_scrip)
+    # os.remove(dest_grid_scrip)
 
     return regrid_weights
 

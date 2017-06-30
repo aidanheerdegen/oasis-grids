@@ -11,12 +11,15 @@ from esmgrids.t42_grid import T42Grid
 from esmgrids.fv300_grid import FV300Grid
 from esmgrids.core2_grid import Core2Grid
 from esmgrids.jra55_grid import Jra55Grid
+from esmgrids.woa_grid import WoaGrid
 
 def factory(model_name, model_hgrid, model_mask, model_rows=None, model_cols=None):
 
     if model_name == 'MOM':
         model_grid = MomGrid.fromfile(model_hgrid,
                                       mask_file=model_mask)
+    elif model_name == 'WOA':
+        model_grid = WoaGrid(model_hgrid, mask_file=model_mask)
     elif model_name == 'CICE':
         model_grid = CiceGrid.fromfile(model_hgrid,
                                        mask_file=model_mask)
